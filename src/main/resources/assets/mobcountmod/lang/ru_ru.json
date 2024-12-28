@@ -4,6 +4,7 @@
   "mcm.description.config.count_hostile": "Количество за враждебных мобов, прежде чем слишком много сущностей",
   "mcm.description.config.count_passive": "Количество за дружелюбных мобов, прежде чем слишком много сущностей",
   "mcm.description.config.custom_bg_color": "Устанавливает собственный цвет фона",
+  "mcm.description.config.custom_count": "Количество на одного моба до появления слишком большого количества сущностей, если установлено, отменяет count_hostile и count_passive\nПример: \"minecraft:zombie=10\"",
   "mcm.description.config.display_all": "Показывает всех мобов сразу мобов",
   "mcm.description.config.display_amount_killed": "Отображение количества убитых",
   "mcm.description.config.enabled": "Включает мода MobCountMod по полностью",

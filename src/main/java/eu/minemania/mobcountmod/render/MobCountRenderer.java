@@ -1,8 +1,6 @@
 package eu.minemania.mobcountmod.render;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import eu.minemania.mobcountmod.MobCountMod;
 import eu.minemania.mobcountmod.config.Configs;
@@ -18,6 +16,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
 public class MobCountRenderer
 {
@@ -31,6 +31,7 @@ public class MobCountRenderer
     private final List<StringHolder> lineWrappersPassive = new ArrayList<>();
     private final List<String> linesHostile = new ArrayList<>();
     private final List<String> linesPassive = new ArrayList<>();
+    private Map<String, Integer> maxEntities = new HashMap<>();
 
     public static MobCountRenderer getInstance()
     {
@@ -123,6 +124,8 @@ public class MobCountRenderer
 
         Collections.sort(positionsPassive);
         Collections.sort(positionsHostile);
+        maxEntities.clear();
+        setTooMuchEntities();
 
         for (LinePosPassive pos : positionsPassive)
         {
@@ -208,7 +211,7 @@ public class MobCountRenderer
         totalPassive += size;
         int passiveKilled = DataManager.getEntityCount(entity);
         totalKilledPassive += passiveKilled;
-        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > Configs.Generic.COUNT_PASSIVE.getIntegerValue() ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", passiveKilled) : "");
+        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_PASSIVE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", passiveKilled) : "");
     }
 
     private <T extends Entity> String lineTextH(EntityType<T> entity)
@@ -218,7 +221,7 @@ public class MobCountRenderer
         totalHostile += size;
         int hostileKilled = DataManager.getEntityCount(entity);
         totalKilledHostile += hostileKilled;
-        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > Configs.Generic.COUNT_HOSTILE.getIntegerValue() ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", hostileKilled) : "");
+        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_HOSTILE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", hostileKilled) : "");
     }
 
     private void addLinePassive(InfoTogglePassive type)
@@ -251,6 +254,43 @@ public class MobCountRenderer
         {
             this.addLineHostile(lineTextH(entityType));
         }
+    }
+
+    private void setTooMuchEntities()
+    {
+        List<String> list = Configs.Generic.CUSTOM_COUNT.getStrings();
+        for (String entry : list)
+        {
+            String[] parts = entry.split("=");
+            if (parts.length == 2)
+            {
+                try
+                {
+                    Optional<EntityType<?>> optionalEntityType = EntityType.get(parts[0]);
+                    int count = Integer.parseInt(parts[1]);
+                    optionalEntityType.ifPresent(type -> {
+                        Identifier identifier = Registries.ENTITY_TYPE.getId(optionalEntityType.get());
+                        this.maxEntities.put(identifier.toString(), count);
+                    });
+                }
+                catch (Exception e)
+                {
+                    MobCountMod.logger.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private int getTooMuchEntities(EntityType<?> entityType, int defaultCount)
+    {
+        Identifier identifier = Registries.ENTITY_TYPE.getId(entityType);
+        String key = identifier.toString();
+        if (this.maxEntities.containsKey(key))
+        {
+            return this.maxEntities.get(key);
+        }
+
+        return defaultCount;
     }
 
     private class StringHolder

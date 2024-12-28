@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.9+1.20.6] - 2024-12-29
+
+### Added
+
+- Added Custom Count per entity before too much
+
 ## [1.9.8+1.20.6] - 2024-07-13
 
 ### Added

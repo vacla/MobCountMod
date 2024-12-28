@@ -4,6 +4,7 @@
   "mcm.description.config.count_hostile": "Amount per hostile mob before too much entities",
   "mcm.description.config.count_passive": "Amount per passive mob before too much entities",
   "mcm.description.config.custom_bg_color": "Sets a custom background color",
+  "mcm.description.config.custom_count": "Amount per mob before too much entities, if set will override count_hostile and count_passive\nExample: \"minecraft:zombie=10\"",
   "mcm.description.config.display_all": "Displays all entities at once",
   "mcm.description.config.display_amount_killed": "Display amount killed",
   "mcm.description.config.enabled": "Enables MobCountMod fully",

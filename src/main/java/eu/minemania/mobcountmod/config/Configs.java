@@ -43,6 +43,7 @@ public class Configs implements IConfigHandler
         public static final ConfigString SOUNDFILE = new ConfigString("soundFile", "block.note_block.bass", "mcm.description.config.soundfile");
         public static final ConfigBoolean XP5 = new ConfigBoolean("xp5", false, "mcm.description.config.xp5");
         public static final ConfigBoolean DISPLAY_AMOUNT_KILLED = new ConfigBoolean("displayAmountKilled", false, "mcm.description.config.display_amount_killed");
+        public static final ConfigStringList CUSTOM_COUNT = new ConfigStringList("customCount", ImmutableList.of(), "mcm.description.config.custom_count");
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 COLOR_BACK_DEFAULT,
@@ -50,6 +51,7 @@ public class Configs implements IConfigHandler
                 COUNT_HOSTILE,
                 COUNT_PASSIVE,
                 CUSTOM_BG_COLOR,
+                CUSTOM_COUNT,
                 DISPLAY_ALL,
                 DISPLAY_AMOUNT_KILLED,
                 ENABLED,
