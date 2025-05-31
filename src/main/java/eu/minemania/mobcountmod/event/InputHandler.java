@@ -50,9 +50,9 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
     @Override
     public void addHotkeys(IKeybindManager manager)
     {
-        manager.addHotkeysForCategory(Reference.MOD_NAME, "mcm.hotkeys.category.generic_hotkeys", Hotkeys.HOTKEY_LIST);
-        manager.addHotkeysForCategory(Reference.MOD_NAME, "mcm.hotkeys.category.info_toggle_hotkeys.passive", ImmutableList.copyOf(InfoTogglePassive.values()));
-        manager.addHotkeysForCategory(Reference.MOD_NAME, "mcm.hotkeys.category.info_toggle_hotkeys.hostile", ImmutableList.copyOf(InfoToggleHostile.values()));
+        manager.addHotkeysForCategory(Reference.MOD_NAME, "mobcountmod.hotkeys.category.generic_hotkeys", Hotkeys.HOTKEY_LIST);
+        manager.addHotkeysForCategory(Reference.MOD_NAME, "mobcountmod.hotkeys.category.info_toggle_hotkeys.passive", ImmutableList.copyOf(InfoTogglePassive.values()));
+        manager.addHotkeysForCategory(Reference.MOD_NAME, "mobcountmod.hotkeys.category.info_toggle_hotkeys.hostile", ImmutableList.copyOf(InfoToggleHostile.values()));
     }
 
     @Override

@@ -54,7 +54,7 @@ public class MobCountCommand extends MobCountCommandBase
     private static int info(CommandContext<ServerCommandSource> context)
     {
         localOutput(context.getSource(), Reference.MOD_NAME + " [" + Reference.MOD_VERSION + "]");
-        localOutputT(context.getSource(), "mcm.message.command.info");
+        localOutputT(context.getSource(), "mobcountmod.message.command.info");
         return 1;
     }
 
@@ -66,17 +66,17 @@ public class MobCountCommand extends MobCountCommandBase
             message = getString(context, "[player1[,player2]]");
             Configs.Generic.MESSAGE_LIST.setStrings(Arrays.asList(message.split(",")));
             String toSend = message.replaceAll(",", " ");
-            localOutputT(context.getSource(), "mcm.message.command.message", toSend);
+            localOutputT(context.getSource(), "mobcountmod.message.command.message", toSend);
         }
         catch (Exception e)
         {
             if (Configs.Generic.MESSAGE_LIST.getStrings() == null)
             {
-                localOutputT(context.getSource(), "mcm.message.command.message.not_notify");
+                localOutputT(context.getSource(), "mobcountmod.message.command.message.not_notify");
             }
             else
             {
-                String toSend = "mcm.message.command.message";
+                String toSend = "mobcountmod.message.command.message";
                 StringBuilder names = new StringBuilder();
                 for (String name : Configs.Generic.MESSAGE_LIST.getStrings())
                 {
@@ -91,7 +91,7 @@ public class MobCountCommand extends MobCountCommandBase
     private static int message_clear(CommandContext<ServerCommandSource> context)
     {
         Configs.Generic.MESSAGE_LIST.setStrings(null);
-        localOutputT(context.getSource(), "mcm.message.command.message.not_notify");
+        localOutputT(context.getSource(), "mobcountmod.message.command.message.not_notify");
         return 1;
     }
 
@@ -102,12 +102,12 @@ public class MobCountCommand extends MobCountCommandBase
         {
             soundFile = getString(context, "sound file");
             Configs.Generic.SOUNDFILE.setValueFromString(soundFile);
-            localOutputT(context.getSource(), "mcm.message.command.sound.using", Configs.Generic.SOUNDFILE.getStringValue());
+            localOutputT(context.getSource(), "mobcountmod.message.command.sound.using", Configs.Generic.SOUNDFILE.getStringValue());
 
         }
         catch (Exception e)
         {
-            localOutputT(context.getSource(), "mcm.message.command.sound.current", Configs.Generic.SOUNDFILE.getStringValue());
+            localOutputT(context.getSource(), "mobcountmod.message.command.sound.current", Configs.Generic.SOUNDFILE.getStringValue());
         }
         return 1;
     }
@@ -121,25 +121,25 @@ public class MobCountCommand extends MobCountCommandBase
             Configs.Generic.NOTIFYFACTION.setBooleanValue(on);
             if (on)
             {
-                localOutputT(context.getSource(), "mcm.message.command.faction.notify");
+                localOutputT(context.getSource(), "mobcountmod.message.command.faction.notify");
             }
             else
             {
-                localOutputT(context.getSource(), "mcm.message.command.faction.not_notify");
+                localOutputT(context.getSource(), "mobcountmod.message.command.faction.not_notify");
             }
         }
         catch (Exception e)
         {
-            String strSetting = Configs.Generic.NOTIFYFACTION.getBooleanValue() ? "mcm.message.setting.on" : "mcm.message.setting.off";
-            localOutputT(context.getSource(), "mcm.message.command.faction.enabled", StringUtils.translate(strSetting));
+            String strSetting = Configs.Generic.NOTIFYFACTION.getBooleanValue() ? "mobcountmod.message.setting.on" : "mobcountmod.message.setting.off";
+            localOutputT(context.getSource(), "mobcountmod.message.command.faction.enabled", StringUtils.translate(strSetting));
         }
         if (Configs.Generic.NOTIFYFACTION.getBooleanValue())
         {
-            localOutputT(context.getSource(), "mcm.message.command.faction.notifying");
+            localOutputT(context.getSource(), "mobcountmod.message.command.faction.notifying");
         }
         else
         {
-            localOutputT(context.getSource(), "mcm.message.command.faction.not_notifying");
+            localOutputT(context.getSource(), "mobcountmod.message.command.faction.not_notifying");
         }
         return 1;
     }
@@ -153,24 +153,24 @@ public class MobCountCommand extends MobCountCommandBase
             Configs.Generic.XP5.setBooleanValue(on);
             if (on)
             {
-                localOutputT(context.getSource(), "mcm.message.command.xp5.shocker");
+                localOutputT(context.getSource(), "mobcountmod.message.command.xp5.shocker");
             }
             else
             {
-                localOutputT(context.getSource(), "mcm.message.command.xp5.normal_radius");
+                localOutputT(context.getSource(), "mobcountmod.message.command.xp5.normal_radius");
             }
         }
         catch (Exception e)
         {
-            String strSetting = Configs.Generic.XP5.getBooleanValue() ? "mcm.message.setting.on" : "mcm.message.setting.off";
-            localOutputT(context.getSource(), "mcm.message.command.xp5", StringUtils.translate(strSetting));
+            String strSetting = Configs.Generic.XP5.getBooleanValue() ? "mobcountmod.message.setting.on" : "mobcountmod.message.setting.off";
+            localOutputT(context.getSource(), "mobcountmod.message.command.xp5", StringUtils.translate(strSetting));
         }
         return 1;
     }
 
     private static int help(CommandContext<ServerCommandSource> context)
     {
-        localOutputT(context.getSource(), "mcm.message.command.help", Reference.MOD_NAME, Reference.MOD_VERSION);
+        localOutputT(context.getSource(), "mobcountmod.message.command.help", Reference.MOD_NAME, Reference.MOD_VERSION);
         int cmdCount = 0;
         CommandDispatcher<ServerCommandSource> dispatcher = Command.commandDispatcher;
         for (CommandNode<ServerCommandSource> command : dispatcher.getRoot().getChildren())
@@ -197,7 +197,7 @@ public class MobCountCommand extends MobCountCommandBase
     private static int killed_clear(CommandContext<ServerCommandSource> context)
     {
         DataManager.resetEntityCount();
-        localOutputT(context.getSource(), "mcm.message.command.killed.reset");
+        localOutputT(context.getSource(), "mobcountmod.message.command.killed.reset");
         return 1;
     }
 

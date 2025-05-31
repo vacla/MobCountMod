@@ -3,6 +3,7 @@ package eu.minemania.mobcountmod.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import eu.minemania.mobcountmod.MobCountMod;
+import eu.minemania.mobcountmod.Reference;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigInteger;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
@@ -58,29 +59,37 @@ public enum InfoTogglePassive implements IConfigInteger, IHotkeyTogglable
     WOLF("infoWolf", true, 7, "", "wolves"),
     ZOMBIE_HORSE("infoZombieHorse", true, 31, "", "zombie horses");
 
+    private static final String INFO_KEY = Reference.MOD_ID + ".config.info_toggle";
+
     private final String name;
+    private final String extra;
+    private String comment;
+    private String prettyName;
+    private String translatedName;
     private final IKeybind keybind;
     private final boolean defaultValueBoolean;
     private final int defaultLinePosition;
     private boolean valueBoolean;
     private int linePosition;
-    private Object[] commentArgs;
 
-    InfoTogglePassive(String name, boolean defaultValue, int linePosition, String defaultHotkey, Object... commentArgs)
+    InfoTogglePassive(String name, boolean defaultValue, int linePosition, String defaultHotkey, String extra)
     {
-        this(name, defaultValue, linePosition, defaultHotkey, KeybindSettings.DEFAULT, commentArgs);
+        this(name, defaultValue, linePosition, defaultHotkey, KeybindSettings.DEFAULT, extra);
     }
 
-    InfoTogglePassive(String name, boolean defaultValue, int linePosition, String defaultHotkey, KeybindSettings settings, Object... commentArgs)
+    InfoTogglePassive(String name, boolean defaultValue, int linePosition, String defaultHotkey, KeybindSettings settings, String extra)
     {
         this.name = name;
+        this.extra = extra;
+        this.comment = buildTranslateName("description");
+        this.prettyName = buildTranslateName(name, "prettyName");
+        this.translatedName = buildTranslateName(name, "name");
         this.valueBoolean = defaultValue;
         this.defaultValueBoolean = defaultValue;
         this.keybind = KeybindMulti.fromStorageString(defaultHotkey, settings);
         this.keybind.setCallback(new KeyCallbackToggleBoolean(this));
         this.linePosition = linePosition;
         this.defaultLinePosition = linePosition;
-        this.commentArgs = commentArgs;
     }
 
     @Override
@@ -96,18 +105,39 @@ public enum InfoTogglePassive implements IConfigInteger, IHotkeyTogglable
     }
 
     @Override
-    public String getComment()
+    public String getPrettyName()
     {
-        return StringUtils.translate("mcm.description.config.infotoggle", getCommentArgs());
+        return StringUtils.getTranslatedOrFallback(this.prettyName, this.prettyName.isEmpty() ? StringUtils.splitCamelCase(this.name) : this.prettyName);
     }
 
-    public Object[] getCommentArgs()
+    @Override
+    public String getComment()
     {
-        if (this.commentArgs != null)
+        return StringUtils.getTranslatedOrFallback(this.comment, this.comment).replaceAll("\\$extra\\$", this.extra);
+    }
+
+    @Override
+    public String getTranslatedName()
+    {
+        return StringUtils.getTranslatedOrFallback(this.translatedName, this.name);
+    }
+
+    @Override
+    public void setPrettyName(String prettyName)
+    {
+        this.prettyName = prettyName;
+    }
+
+    @Override
+    public void setTranslatedName(String translatedName)
         {
-            return this.commentArgs;
+        this.translatedName = translatedName;
         }
-        return new Object[0];
+
+    @Override
+    public void setComment(String comment)
+    {
+        this.comment = comment;
     }
 
     @Override
@@ -163,7 +193,7 @@ public enum InfoTogglePassive implements IConfigInteger, IHotkeyTogglable
         }
         catch (Exception e)
         {
-            MobCountMod.logger.warn("Failed to red config value for '{}' from the JSON config", this.getName(), e);
+            MobCountMod.logger.warn("Failed to read config value for '{}' from the JSON config", this.getName(), e);
         }
     }
 
@@ -231,5 +261,14 @@ public enum InfoTogglePassive implements IConfigInteger, IHotkeyTogglable
     public int getMaxIntegerValue()
     {
         return InfoTogglePassive.values().length - 1;
+    }
+
+    private static String buildTranslateName(String type)
+    {
+        return INFO_KEY + "." + type;
+    }
+    private static String buildTranslateName(String name, String type)
+    {
+        return INFO_KEY + "." + type + "." + name;
     }
 }

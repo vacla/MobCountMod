@@ -25,7 +25,7 @@ public class GuiConfigs extends GuiConfigsBase
 {
     public GuiConfigs()
     {
-        super(10, 50, Reference.MOD_ID, null, "mcm.gui.title.configs");
+        super(10, 50, Reference.MOD_ID, null, "mobcountmod.gui.title.configs");
     }
 
     @Override
@@ -157,13 +157,13 @@ public class GuiConfigs extends GuiConfigsBase
 
     public enum ConfigGuiTab
     {
-        GENERIC("mcm.gui.button.config_gui.generic"),
-        HOTKEYS("mcm.gui.button.config_gui.hotkeys"),
-        INFO_TOGGLES("mcm.gui.button.config_gui.info_toggles"),
-        INFO_LINE_ORDER_HOSTILE("mcm.gui.button.config_gui.info_line_order.hostile"),
-        INFO_LINE_ORDER_PASSIVE("mcm.gui.button.config_gui.info_line_order.passive"),
-        INFO_HOTKEYS_HOSTILE("mcm.gui.button.config_gui.info_hotkeys.hostile"),
-        INFO_HOTKEYS_PASSIVE("mcm.gui.button.config_gui.info_hotkeys.passive");
+        GENERIC("mobcountmod.gui.button.config_gui.generic"),
+        HOTKEYS("mobcountmod.gui.button.config_gui.hotkeys"),
+        INFO_TOGGLES("mobcountmod.gui.button.config_gui.info_toggles"),
+        INFO_LINE_ORDER_HOSTILE("mobcountmod.gui.button.config_gui.info_line_order.hostile"),
+        INFO_LINE_ORDER_PASSIVE("mobcountmod.gui.button.config_gui.info_line_order.passive"),
+        INFO_HOTKEYS_HOSTILE("mobcountmod.gui.button.config_gui.info_hotkeys.hostile"),
+        INFO_HOTKEYS_PASSIVE("mobcountmod.gui.button.config_gui.info_hotkeys.passive");
 
         private final String translationKey;
 

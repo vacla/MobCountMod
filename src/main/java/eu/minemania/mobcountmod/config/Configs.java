@@ -3,7 +3,8 @@ package eu.minemania.mobcountmod.config;
 import fi.dy.masa.malilib.config.HudAlignment;
 import fi.dy.masa.malilib.config.IConfigHandler;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
@@ -28,22 +29,22 @@ public class Configs implements IConfigHandler
      */
     public static class Generic
     {
-        public static final ConfigColor COLOR_BACK_DEFAULT = new ConfigColor("colorBackDefault", "#30FFF0E0", "mcm.description.config.color_back_default");
-        public static final ConfigColor COLOR_FORE_DEFAULT = new ConfigColor("colorForeDefault", "#00E0E0E0", "mcm.description.config.color_fore_default");
-        public static final ConfigInteger COUNT_HOSTILE = new ConfigInteger("countHostile", 16, "mcm.description.config.count_hostile");
-        public static final ConfigInteger COUNT_PASSIVE = new ConfigInteger("countPassive", 16, "mcm.description.config.count_passive");
-        public static final ConfigBoolean CUSTOM_BG_COLOR = new ConfigBoolean("customBgColor", false, "mcm.description.config.custom_bg_color");
-        public static final ConfigBoolean DISPLAY_ALL = new ConfigBoolean("displayAll", false, "mcm.description.config.display_all");
-        public static final ConfigBoolean ENABLED = new ConfigBoolean("enabled", true, "mcm.description.config.enabled");
-        public static final ConfigOptionList HUD_ALIGNMENT = new ConfigOptionList("hudAlignment", HudAlignment.TOP_LEFT, "mcm.description.config.hudalignment");
-        public static final ConfigStringList MESSAGE_LIST = new ConfigStringList("messageList", ImmutableList.of(), "mcm.description.config.message_list");
-        public static final ConfigBoolean NOTIFYFACTION = new ConfigBoolean("notifyFaction", false, "mcm.description.config.notifyfaction");
-        public static final ConfigInteger RADIUS_HOSTILE = new ConfigInteger("radiusHostile", 16, "mcm.description.config.radius_hostile");
-        public static final ConfigInteger RADIUS_PASSIVE = new ConfigInteger("radiusPassive", 16, "mcm.description.config.radius_passive");
-        public static final ConfigString SOUNDFILE = new ConfigString("soundFile", "block.note_block.bass", "mcm.description.config.soundfile");
-        public static final ConfigBoolean XP5 = new ConfigBoolean("xp5", false, "mcm.description.config.xp5");
-        public static final ConfigBoolean DISPLAY_AMOUNT_KILLED = new ConfigBoolean("displayAmountKilled", false, "mcm.description.config.display_amount_killed");
-        public static final ConfigStringList CUSTOM_COUNT = new ConfigStringList("customCount", ImmutableList.of(), "mcm.description.config.custom_count");
+        public static final ConfigColor COLOR_BACK_DEFAULT = new ConfigColor("colorBackDefault", "#30FFF0E0", "mobcountmod.config.color_back_default.description");
+        public static final ConfigColor COLOR_FORE_DEFAULT = new ConfigColor("colorForeDefault", "#00E0E0E0", "mobcountmod.config.color_fore_default.description");
+        public static final ConfigInteger COUNT_HOSTILE = new ConfigInteger("countHostile", 16, "mobcountmod.config.count_hostile.description");
+        public static final ConfigInteger COUNT_PASSIVE = new ConfigInteger("countPassive", 16, "mobcountmod.config.count_passive.description");
+        public static final ConfigBoolean CUSTOM_BG_COLOR = new ConfigBoolean("customBgColor", false, "mobcountmod.config.custom_bg_color.description");
+        public static final ConfigBoolean DISPLAY_ALL = new ConfigBoolean("displayAll", false, "mobcountmod.config.display_all.description");
+        public static final ConfigBoolean ENABLED = new ConfigBoolean("enabled", true, "mobcountmod.config.enabled.description");
+        public static final ConfigOptionList HUD_ALIGNMENT = new ConfigOptionList("hudAlignment", HudAlignment.TOP_LEFT, "mobcountmod.config.hudalignment.description");
+        public static final ConfigStringList MESSAGE_LIST = new ConfigStringList("messageList", ImmutableList.of(), "mobcountmod.config.message_list.description");
+        public static final ConfigBoolean NOTIFYFACTION = new ConfigBoolean("notifyFaction", false, "mobcountmod.config.notifyfaction.description");
+        public static final ConfigInteger RADIUS_HOSTILE = new ConfigInteger("radiusHostile", 16, "mobcountmod.config.radius_hostile.description");
+        public static final ConfigInteger RADIUS_PASSIVE = new ConfigInteger("radiusPassive", 16, "mobcountmod.config.radius_passive.description");
+        public static final ConfigString SOUNDFILE = new ConfigString("soundFile", "block.note_block.bass", "mobcountmod.config.soundfile.description");
+        public static final ConfigBoolean XP5 = new ConfigBoolean("xp5", false, "mobcountmod.config.xp5.description");
+        public static final ConfigBoolean DISPLAY_AMOUNT_KILLED = new ConfigBoolean("displayAmountKilled", false, "mobcountmod.config.display_amount_killed.description");
+        public static final ConfigStringList CUSTOM_COUNT = new ConfigStringList("customCount", ImmutableList.of(), "mobcountmod.config.custom_count.description");
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 COLOR_BACK_DEFAULT,
@@ -70,11 +71,11 @@ public class Configs implements IConfigHandler
      */
     public static void loadFromFile()
     {
-        File configFile = new File(FileUtils.getConfigDirectory(), CONFIG_FILE_NAME);
+        Path configFile = FileUtils.getConfigDirectoryAsPath().resolve(CONFIG_FILE_NAME);
 
-        if (configFile.exists() && configFile.isFile() && configFile.canRead())
+        if (Files.exists(configFile) && Files.isReadable(configFile))
         {
-            JsonElement element = JsonUtils.parseJsonFile(configFile);
+            JsonElement element = JsonUtils.parseJsonFileAsPath(configFile);
 
             if (element != null && element.isJsonObject())
             {
@@ -117,9 +118,14 @@ public class Configs implements IConfigHandler
      */
     public static void saveToFile()
     {
-        File dir = FileUtils.getConfigDirectory();
+        Path dir = FileUtils.getConfigDirectoryAsPath();
 
-        if ((dir.exists() && dir.isDirectory()) || dir.mkdirs())
+        if (!Files.exists(dir))
+        {
+            FileUtils.createDirectoriesIfMissing(dir);
+        }
+
+        if (Files.isDirectory(dir))
         {
             JsonObject root = new JsonObject();
             JsonObject objInfoLineOrdersHostile = JsonUtils.getNestedObject(root, "InfoLineOrdersHostile", true);
@@ -140,7 +146,7 @@ public class Configs implements IConfigHandler
                 objInfoLineOrdersPassive.add(toggle.getName(), new JsonPrimitive(toggle.getIntegerValue()));
             }
 
-            JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
+            JsonUtils.writeJsonToFileAsPath(root, dir.resolve(CONFIG_FILE_NAME));
         }
     }
 

@@ -3,6 +3,7 @@ package eu.minemania.mobcountmod.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import eu.minemania.mobcountmod.MobCountMod;
+import eu.minemania.mobcountmod.Reference;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigInteger;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
@@ -53,29 +54,37 @@ public enum InfoToggleHostile implements IConfigInteger, IHotkeyTogglable
     ZOMBIE_VILLAGER("infoZombieVillager", true, 29, "", "zombie villagers"),
     ZOMBIFIED_PIGLIN("infoZombifiedPiglin", true, 28, "", "zombified piglins");
 
+    private static final String INFO_KEY = Reference.MOD_ID + ".config.info_toggle";
+
     private final String name;
+    private final String extra;
+    private String comment;
+    private String prettyName;
+    private String translatedName;
     private final IKeybind keybind;
     private final boolean defaultValueBoolean;
     private final int defaultLinePosition;
     private boolean valueBoolean;
     private int linePosition;
-    private Object[] commentArgs;
 
-    InfoToggleHostile(String name, boolean defaultValue, int linePosition, String defaultHotkey, Object... commentArgs)
+    InfoToggleHostile(String name, boolean defaultValue, int linePosition, String defaultHotkey, String extra)
     {
-        this(name, defaultValue, linePosition, defaultHotkey, KeybindSettings.DEFAULT, commentArgs);
+        this(name, defaultValue, linePosition, defaultHotkey, KeybindSettings.DEFAULT, extra);
     }
 
-    InfoToggleHostile(String name, boolean defaultValue, int linePosition, String defaultHotkey, KeybindSettings settings, Object... commentArgs)
+    InfoToggleHostile(String name, boolean defaultValue, int linePosition, String defaultHotkey, KeybindSettings settings, String extra)
     {
         this.name = name;
+        this.extra = extra;
+        this.comment = buildTranslateName("description");
+        this.prettyName = buildTranslateName(name, "prettyName");
+        this.translatedName = buildTranslateName(name, "name");
         this.valueBoolean = defaultValue;
         this.defaultValueBoolean = defaultValue;
         this.keybind = KeybindMulti.fromStorageString(defaultHotkey, settings);
         this.keybind.setCallback(new KeyCallbackToggleBoolean(this));
         this.linePosition = linePosition;
         this.defaultLinePosition = linePosition;
-        this.commentArgs = commentArgs;
     }
 
     @Override
@@ -91,18 +100,39 @@ public enum InfoToggleHostile implements IConfigInteger, IHotkeyTogglable
     }
 
     @Override
-    public String getComment()
+    public String getPrettyName()
     {
-        return StringUtils.translate("mcm.description.config.infotoggle", getCommentArgs());
+        return StringUtils.getTranslatedOrFallback(this.prettyName, this.prettyName.isEmpty() ? StringUtils.splitCamelCase(this.name) : this.prettyName);
     }
 
-    public Object[] getCommentArgs()
+    @Override
+    public String getComment()
     {
-        if (this.commentArgs != null)
-        {
-            return this.commentArgs;
-        }
-        return new Object[0];
+        return StringUtils.getTranslatedOrFallback(this.comment, this.comment).replaceAll("\\$extra\\$", this.extra);
+    }
+
+    @Override
+    public String getTranslatedName()
+    {
+        return StringUtils.getTranslatedOrFallback(this.translatedName, this.name);
+    }
+
+    @Override
+    public void setPrettyName(String prettyName)
+    {
+        this.prettyName = prettyName;
+    }
+
+    @Override
+    public void setTranslatedName(String translatedName)
+    {
+        this.translatedName = translatedName;
+    }
+
+    @Override
+    public void setComment(String comment)
+    {
+        this.comment = comment;
     }
 
     @Override
@@ -158,14 +188,14 @@ public enum InfoToggleHostile implements IConfigInteger, IHotkeyTogglable
         }
         catch (Exception e)
         {
-            MobCountMod.logger.warn("Failed to red config value for '{}' from the JSON config", this.getName(), e);
+            MobCountMod.logger.warn("Failed to read config value for '{}' from the JSON config", this.getName(), e);
         }
     }
 
     @Override
     public boolean isModified(String newValue)
     {
-        return String.valueOf(this.defaultValueBoolean).equals(newValue) == false;
+        return !String.valueOf(this.defaultValueBoolean).equals(newValue);
     }
 
     @Override
@@ -226,5 +256,14 @@ public enum InfoToggleHostile implements IConfigInteger, IHotkeyTogglable
     public int getMaxIntegerValue()
     {
         return InfoToggleHostile.values().length - 1;
+    }
+
+    private static String buildTranslateName(String type)
+    {
+        return INFO_KEY + "." + type;
+    }
+    private static String buildTranslateName(String name, String type)
+    {
+        return INFO_KEY + "." + type + "." + name;
     }
 }

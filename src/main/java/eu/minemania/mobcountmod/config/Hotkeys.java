@@ -11,11 +11,11 @@ import com.google.common.collect.ImmutableList;
  */
 public class Hotkeys
 {
-    public static final ConfigHotkey PASSIVE = new ConfigHotkey("togglePassive", "P", "mcm.description.hotkey.passive");
-    public static final ConfigHotkey HOSTILE = new ConfigHotkey("toggleHostile", "O", "mcm.description.hotkey.hostile");
-    public static final ConfigHotkey OPEN_GUI_SETTINGS = new ConfigHotkey("openGuiSettings", "P,C", "mcm.description.hotkey.open_gui_settings");
-    public static final ConfigHotkey TOGGLE_BOTH = new ConfigHotkey("toggleBoth", "", "mcm.description.hotkey.both");
-    public static final ConfigHotkey EMPTY_MOBCOUNTS = new ConfigHotkey("emptyMobcounts", "", "mcm.description.hotkey.empty_mobcounts");
+    public static final ConfigHotkey PASSIVE = new ConfigHotkey("togglePassive", "P", "mobcountmod.hotkey.passive.description");
+    public static final ConfigHotkey HOSTILE = new ConfigHotkey("toggleHostile", "O", "mobcountmod.hotkey.hostile.description");
+    public static final ConfigHotkey OPEN_GUI_SETTINGS = new ConfigHotkey("openGuiSettings", "P,C", "mobcountmod.hotkey.open_gui_settings.description");
+    public static final ConfigHotkey TOGGLE_BOTH = new ConfigHotkey("toggleBoth", "", "mobcountmod.hotkey.both.description");
+    public static final ConfigHotkey EMPTY_MOBCOUNTS = new ConfigHotkey("emptyMobcounts", "", "mobcountmod.hotkey.empty_mobcounts.description");
 
     public static final List<ConfigHotkey> HOTKEY_LIST = ImmutableList.of(
             EMPTY_MOBCOUNTS,

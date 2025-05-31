@@ -211,7 +211,7 @@ public class MobCountRenderer
         totalPassive += size;
         int passiveKilled = DataManager.getEntityCount(entity);
         totalKilledPassive += passiveKilled;
-        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_PASSIVE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", passiveKilled) : "");
+        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_PASSIVE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mobcountmod.message.mobcounter.killed", passiveKilled) : "");
     }
 
     private <T extends Entity> String lineTextH(EntityType<T> entity)
@@ -221,14 +221,14 @@ public class MobCountRenderer
         totalHostile += size;
         int hostileKilled = DataManager.getEntityCount(entity);
         totalKilledHostile += hostileKilled;
-        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_HOSTILE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.killed", hostileKilled) : "");
+        return size == 0 && !Configs.Generic.DISPLAY_ALL.getBooleanValue() ? "" : String.format("%s: %s%d%s%s", StringUtils.translate(entity.getTranslationKey()), size > getTooMuchEntities(entity, Configs.Generic.COUNT_HOSTILE.getIntegerValue()) ? GuiBase.TXT_RED : GuiBase.TXT_GREEN, size, GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mobcountmod.message.mobcounter.killed", hostileKilled) : "");
     }
 
     private void addLinePassive(InfoTogglePassive type)
     {
         if (type == InfoTogglePassive.RADIUS_COUNTER)
         {
-            this.addLinePassive(String.format("%s %s%s%s%s", StringUtils.translate("mcm.message.mobcounter.radius", DataManager.getCounter().getRadiusP()), getColor(totalPassive, true), StringUtils.translate("mcm.message.mobcounter.total", this.totalPassive), GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.total_killed", this.totalKilledPassive) : ""));
+            this.addLinePassive(String.format("%s %s%s%s%s", StringUtils.translate("mobcountmod.message.mobcounter.radius", DataManager.getCounter().getRadiusP()), getColor(totalPassive, true), StringUtils.translate("mobcountmod.message.mobcounter.total", this.totalPassive), GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mobcountmod.message.mobcounter.total_killed", this.totalKilledPassive) : ""));
         }
 
         EntityType<?> entityType = DataManager.getCounter().getPassiveEntityType(type);
@@ -245,7 +245,7 @@ public class MobCountRenderer
     {
         if (type == InfoToggleHostile.RADIUS_COUNTER)
         {
-            this.addLineHostile(String.format("%s %s%s%s%s", StringUtils.translate("mcm.message.mobcounter.radius", DataManager.getCounter().getRadiusH()), getColor(totalHostile, false), StringUtils.translate("mcm.message.mobcounter.total", this.totalHostile), GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mcm.message.mobcounter.total_killed", this.totalKilledHostile) : ""));
+            this.addLineHostile(String.format("%s %s%s%s%s", StringUtils.translate("mobcountmod.message.mobcounter.radius", DataManager.getCounter().getRadiusH()), getColor(totalHostile, false), StringUtils.translate("mobcountmod.message.mobcounter.total", this.totalHostile), GuiBase.TXT_RST, Configs.Generic.DISPLAY_AMOUNT_KILLED.getBooleanValue() ? " " + StringUtils.translate("mobcountmod.message.mobcounter.total_killed", this.totalKilledHostile) : ""));
         }
 
         EntityType<?> entityType = DataManager.getCounter().getHostileEntityType(type);

@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.modrinth.minotaur' version '2.+'
 }
@@ -13,10 +13,18 @@ if (ENV.LOADERS) {
 	loadersResult = jsonSlurper.parseText(ENV.LOADERS)
 }
 
+group = project.group + "." + project.mod_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = project.mod_version + '+' + project.minecraft_version_mod
+
+base {
+	archivesName = project.mod_file_name
+}
+
 repositories {
 	mavenCentral()
-	maven { url 'https://masa.dy.fi/maven' }
-	maven { url 'https://maven.terraformersmc.com/releases/' }
+//	maven { url 'https://masa.dy.fi/maven' }
+	maven { url = 'https://maven.terraformersmc.com/' }
+	maven {url = 'https://jitpack.io' }
 }
 
 dependencies {
@@ -25,15 +33,9 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 	implementation "com.google.code.findbugs:jsr305:3+"
 
-	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_malilib}:${project.malilib_version}"
+//	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_malilib}:${project.malilib_version}"
+	modImplementation "com.github.sakura-ryoko:malilib:${project.minecraft_version_malilib}-${project.malilib_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-}
-
-group = project.group + "." + project.mod_id // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-version = project.mod_version + '+' + project.minecraft_version_mod
-
-base {
-	archivesName = project.mod_file_name
 }
 
 def CHANGELOG = ENV.CHANGELOG ?: "No changelog provided"
@@ -54,6 +56,11 @@ processResources {
 	}
 }
 
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 21
+}
+
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 	targetCompatibility = JavaVersion.VERSION_21
@@ -61,11 +68,6 @@ java {
 
 jar {
 	from "LICENSE.md"
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release = 21
 }
 
 modrinth {
