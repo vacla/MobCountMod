@@ -31,12 +31,12 @@ public class MobCountCommandBase
     {
         MutableText chat = Text.literal(message);
         chat.formatted(color);
-        sender.getEntity().sendMessage(chat);
+        sender.sendMessage(chat);
     }
 
     public static void sendColoredText(ServerCommandSource sender, Formatting color, MutableText component)
     {
         component.formatted(color);
-        sender.getEntity().sendMessage(component);
+        sender.sendMessage(component);
     }
 }
