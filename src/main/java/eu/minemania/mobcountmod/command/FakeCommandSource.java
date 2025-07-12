@@ -5,13 +5,14 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class FakeCommandSource extends ServerCommandSource
 {
     public FakeCommandSource(ClientPlayerEntity player)
     {
-        super(player, player.getPos(), player.getRotationClient(), null, 0, player.getName().getString(), player.getDisplayName(), null, player);
+        super(CommandOutput.DUMMY, player.getPos(), player.getRotationClient(), null, 0, player.getName().getString(), player.getDisplayName(), null, player);
     }
 
     @Override
