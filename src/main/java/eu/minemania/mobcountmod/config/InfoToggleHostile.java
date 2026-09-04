@@ -21,7 +21,6 @@ public enum InfoToggleHostile implements IConfigInteger, IHotkeyTogglable
     BREEZE("infoBreeze", true, 35, "", "breezes"),
     CAVE_SPIDER("infoCaveSpider", true, 18, "", "cave spiders"),
     CREAKING("infoCreaking", true, 37, "", "creakings"),
-    CREAKING_TRANSIENT("infoCreakingTransient", true, 38, "", "creaking transients"),
     CREEPER("infoCreeper", true, 3, "", "creepers"),
     DROWNED("infoDrowned", true, 19, "", "drowneds"),
     ELDER_GUARDIAN("infoElderGuardian", true, 20, "", "elder guardians"),

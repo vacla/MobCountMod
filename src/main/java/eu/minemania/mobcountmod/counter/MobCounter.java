@@ -354,10 +354,6 @@ public class MobCounter
         {
             return EntityType.CREAKING;
         }
-        else if (type == InfoToggleHostile.CREAKING_TRANSIENT)
-        {
-            return EntityType.CREAKING_TRANSIENT;
-        }
         else if (type == InfoToggleHostile.CREEPER)
         {
             return EntityType.CREEPER;
